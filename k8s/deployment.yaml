@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: "vue3-marvel"
+  name: "vue3-marvel"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: "vue3-marvel"
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: "vue3-marvel"
+    spec:
+      containers:
+        - image: docker.io/meirongdev/vue3-marvel:latest
+          imagePullPolicy: Always
+          name: "vue3-marvel"
+          ports:
+            - containerPort: 80
+              protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: "vue3-marvel"
+  name: "vue3-marvel"
+spec:
+  ports:
+    - port: 80
+      protocol: TCP
+      targetPort: 80
+  selector:
+    app: "vue3-marvel"
+  sessionAffinity: None
